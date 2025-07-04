@@ -1,16 +1,23 @@
 # random_wallpaper_changer
+code by Antonius (indodev.asia)
 
-A new Flutter project.
+A linux gui app in dart, that change wallpaper randomly every minute- code by Antonius (indodev.asia)
 
-## Getting Started
+**How to Install ?**
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+<code>
+git clone https://github.com/indodev-asia/random_wallpaper_changer
+</code>
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- Prepare a directory with wallpaper files
+- Edit random_wallpaper_changer/lib/main.dart at line 66 :
+  final String wallpaperDirectory = '/home/robohax/Desktop/Wallpaper/Car'; ----> change this to your wallpaper path in your system
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+<code>
+cd  random_wallpaper_changer
+flutter run -d linux
+</code>
+
+<br>
+<img src="https://raw.githubusercontent.com/indodev-asia/random_wallpaper_changer/refs/heads/main/screenshot.png">
