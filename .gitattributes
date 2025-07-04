@@ -1,0 +1,9 @@
+# Ignore C++ files that might be part of platform-specific directories (common in Flutter)
+android/** linguist-vendored
+ios/** linguist-vendored
+windows/** linguist-vendored
+linux/** linguist-vendored
+macos/** linguist-vendored
+
+# Ensure Dart files are detected
+*.dart linguist-language=Dart
