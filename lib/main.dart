@@ -26,13 +26,13 @@ class WallpaperChangerApp extends StatelessWidget {
           bodyMedium: TextStyle(color: Colors.white70),
           labelLarge: TextStyle(color: Colors.white), 
         ),
-        // Apply rounded corners to all card-like elements
+        
         cardTheme: CardThemeData( // Changed from CardTheme to CardThemeData
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12.0),
           ),
         ),
-        // Apply rounded corners to buttons
+        
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
@@ -41,7 +41,7 @@ class WallpaperChangerApp extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
           ),
         ),
-        // Apply rounded corners to app bar
+       
         appBarTheme: AppBarTheme( // Changed from AppBarTheme to AppBarThemeData implicitly, as AppBarTheme is the correct class
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12.0),
@@ -61,11 +61,10 @@ class WallpaperChangerHomePage extends StatefulWidget {
 }
 
 class _WallpaperChangerHomePageState extends State<WallpaperChangerHomePage> {
-  // The directory where your wallpaper files are located.
-  // Please ensure this path is correct for your system.
+  
   final String wallpaperDirectory = '/home/robohax/Desktop/Wallpaper/Car';
 
-  // A list of supported image file extensions.
+  
   final List<String> imageExtensions = const [
     '.jpg',
     '.jpeg',
@@ -92,8 +91,7 @@ class _WallpaperChangerHomePageState extends State<WallpaperChangerHomePage> {
     super.dispose();
   }
 
-  /// Starts the wallpaper changing process.
-  /// Calls `changeWallpaper` immediately and then sets up a periodic timer.
+  
   void _startWallpaperChanger() {
     _changeWallpaper(); // Change wallpaper immediately
     _timer = Timer.periodic(const Duration(minutes: 1), (Timer t) {
@@ -101,9 +99,7 @@ class _WallpaperChangerHomePageState extends State<WallpaperChangerHomePage> {
     });
   }
 
-  /// Asynchronously changes the desktop wallpaper.
-  /// It selects a random image from the specified directory and sets it
-  /// using the `gsettings` command.
+  
   Future<void> _changeWallpaper() async {
     setState(() {
       _statusMessage = 'Attempting to change wallpaper at ${DateTime.now().toLocal().toString().split('.')[0]}...';
@@ -111,7 +107,7 @@ class _WallpaperChangerHomePageState extends State<WallpaperChangerHomePage> {
 
     final Directory dir = Directory(wallpaperDirectory);
 
-    // Check if the specified wallpaper directory exists.
+   
     if (!await dir.exists()) {
       setState(() {
         _statusMessage = 'Error: Wallpaper directory "$wallpaperDirectory" does not exist. Please create it.';
@@ -121,11 +117,11 @@ class _WallpaperChangerHomePageState extends State<WallpaperChangerHomePage> {
     }
 
     try {
-      // List all files and directories within the specified wallpaper directory.
+      
       final List<FileSystemEntity> entities = await dir.list().toList();
       final List<File> imageFiles = [];
 
-      // Filter out only the files that are images based on their extensions.
+     
       for (final entity in entities) {
         if (entity is File) {
           final String lowerCasePath = entity.path.toLowerCase();
@@ -135,7 +131,7 @@ class _WallpaperChangerHomePageState extends State<WallpaperChangerHomePage> {
         }
       }
 
-      // If no image files are found, print an error and update status.
+     
       if (imageFiles.isEmpty) {
         setState(() {
           _statusMessage = 'No image files found in "$wallpaperDirectory".';
@@ -144,29 +140,28 @@ class _WallpaperChangerHomePageState extends State<WallpaperChangerHomePage> {
         return;
       }
 
-      // Select a random image file from the list of found image files.
+      
       final Random random = Random();
       final File randomImage = imageFiles[random.nextInt(imageFiles.length)];
       final String imagePath = randomImage.path;
 
       print('Selected wallpaper: $imagePath');
 
-      // Construct the URI for the image file.
+     
       final String uri = 'file://$imagePath';
 
-      // Execute the `gsettings` command to set the wallpaper for the light theme.
       final ProcessResult resultLight = await Process.run(
         'gsettings',
         ['set', 'org.gnome.desktop.background', 'picture-uri', uri],
       );
 
-      // Execute the `gsettings` command to set the wallpaper for the dark theme.
+     
       final ProcessResult resultDark = await Process.run(
         'gsettings',
         ['set', 'org.gnome.desktop.background', 'picture-uri-dark', uri],
       );
 
-      // Update status based on command execution results.
+     
       if (resultLight.exitCode == 0 && resultDark.exitCode == 0) {
         setState(() {
           _statusMessage = 'Wallpaper changed to: ${imagePath.split('/').last}';
@@ -180,7 +175,7 @@ class _WallpaperChangerHomePageState extends State<WallpaperChangerHomePage> {
         print('Error changing wallpaper (dark theme): ${resultDark.stderr}');
       }
     } catch (e) {
-      // Catch any unexpected errors during the process.
+    
       setState(() {
         _statusMessage = 'An unexpected error occurred: $e';
       });
